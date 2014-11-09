@@ -13,7 +13,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.PlayScreenActivity_"/>
+        <activity android:name=".ui.activity.PlayScreenActivity_"
+                  android:configChanges="orientation|screenSize"/>
 
     </application>
 
