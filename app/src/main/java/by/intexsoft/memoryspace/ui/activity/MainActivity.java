@@ -14,7 +14,7 @@ public class MainActivity extends Activity
 {
 
 	@Click(R.id.button_size_4)
-	void onButtonSize4Clicked()
+	public void onButtonSize4Clicked()
 	{
 		ActivityRunner.playScreenActivity(this).start();
 	}
