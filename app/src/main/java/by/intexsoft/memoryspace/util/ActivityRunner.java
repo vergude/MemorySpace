@@ -1,6 +1,7 @@
 package by.intexsoft.memoryspace.util;
 
 import android.content.Context;
+
 import by.intexsoft.memoryspace.ui.activity.PlayScreenActivity_;
 
 /**
@@ -8,13 +9,13 @@ import by.intexsoft.memoryspace.ui.activity.PlayScreenActivity_;
  */
 public class ActivityRunner
 {
-	private ActivityRunner()
-	{
+    private ActivityRunner()
+    {
 
-	}
+    }
 
-	public static PlayScreenActivity_.IntentBuilder_ playScreenActivity(Context context)
-	{
-		return PlayScreenActivity_.intent(context);
-	}
+    public static PlayScreenActivity_.IntentBuilder_ playScreenActivity(Context context)
+    {
+        return PlayScreenActivity_.intent(context);
+    }
 }
