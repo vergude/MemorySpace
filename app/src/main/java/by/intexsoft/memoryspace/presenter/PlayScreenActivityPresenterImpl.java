@@ -37,9 +37,9 @@ public class PlayScreenActivityPresenterImpl implements PlayScreenActivityPresen
     }
 
     @Override
-    public void buildPlayField(Context contexts, ViewGroup viewTop, ViewGroup viewBot, BuildPlayField interactor)
+    public void buildPlayField(ViewGroup viewTop, ViewGroup viewBot, BuildPlayField interactor)
     {
-        interactor.buildPlayField(contexts, viewTop, viewBot);
+        interactor.buildPlayField(viewTop, viewBot);
 
     }
 }
