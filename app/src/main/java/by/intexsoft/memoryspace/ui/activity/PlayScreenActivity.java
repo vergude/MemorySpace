@@ -56,13 +56,6 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     {
         return this;
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        setContentView(R.layout.activity_play_screen);
-    }
 }
 
 

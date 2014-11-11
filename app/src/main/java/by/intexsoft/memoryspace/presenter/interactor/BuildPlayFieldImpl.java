@@ -1,16 +1,17 @@
 package by.intexsoft.memoryspace.presenter.interactor;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.androidannotations.annotations.EBean;
+import java.io.IOException;
+import java.io.InputStream;
 
 import by.intexsoft.memoryspace.R;
-import by.intexsoft.memoryspace.view.image_view.CustomImageView;
+import by.intexsoft.memoryspace.view.image_view.SquareImageView;
 
 /**
  * Created by vadim on 07.11.2014.
@@ -55,17 +56,11 @@ public class BuildPlayFieldImpl implements BuildPlayField
 
     public ImageView getImageView(Context context)
     {
-        ImageView imageView = null;
-        if (rows * column > 3)
-        {
-            imageView = new ImageView(context);
-        }
-        else
-        {
-            imageView = new CustomImageView(context);
-        }
-        imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.vopros));
-        imageView.setBackgroundColor(context.getResources().getColor(R.color.orange));
+        SquareImageView imageView = new SquareImageView(context);
+
+//        imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.question));
+//        imageView.setBackgroundColor(context.getResources().getColor(R.color.orange));
+        loadImageFromAsset(context, imageView);
         return imageView;
     }
 
@@ -79,5 +74,20 @@ public class BuildPlayFieldImpl implements BuildPlayField
     public void setMargins(LinearLayout.LayoutParams params)
     {
         params.setMargins(5, 5, 5, 5);
+    }
+
+    public void loadImageFromAsset(Context context, SquareImageView imageView)
+    {
+        try
+        {
+            InputStream ims = context.getAssets().open("car_4.jpg");
+            Drawable d = Drawable.createFromStream(ims, null);
+            imageView.setImageDrawable(d);
+        }
+        catch (IOException ex)
+        {
+            return;
+        }
+
     }
 }
