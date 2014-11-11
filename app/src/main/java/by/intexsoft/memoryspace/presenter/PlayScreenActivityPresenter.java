@@ -11,5 +11,5 @@ import by.intexsoft.memoryspace.view.PlayScreenActivityView;
  */
 public interface PlayScreenActivityPresenter extends BasePresenter <PlayScreenActivityView>
 {
-    void buildPlayField(Context contexts,ViewGroup viewTop, ViewGroup viewBot,BuildPlayField interactor);
+    void buildPlayField(ViewGroup viewTop, ViewGroup viewBot,BuildPlayField interactor);
 }

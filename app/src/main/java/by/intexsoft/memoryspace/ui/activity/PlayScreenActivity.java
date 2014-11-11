@@ -48,7 +48,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
 
     public void initPlayField()
     {
-        presenter.buildPlayField(this, topLayout, botLayout, new BuildPlayFieldImpl(rows, column));
+        presenter.buildPlayField(topLayout, botLayout, new BuildPlayFieldImpl(rows, column,this));
     }
 
     @Override
