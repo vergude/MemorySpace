@@ -8,5 +8,5 @@ import android.view.ViewGroup;
  */
 public interface BuildPlayField
 {
-    void buildPlayField(Context contexts,ViewGroup viewTop, ViewGroup viewBot);
+    void buildPlayField(ViewGroup viewTop, ViewGroup viewBot);
 }

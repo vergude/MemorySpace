@@ -1,20 +1,19 @@
 package by.intexsoft.memoryspace.ui.activity;
 
 import android.app.Activity;
-import android.content.res.Configuration;;
 import android.widget.LinearLayout;
-
 import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenter;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenterImpl;
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayFieldImpl;
 import by.intexsoft.memoryspace.view.PlayScreenActivityView;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+
+;
 
 /**
  * Created by anastasya.konovalova on 04.11.2014.
@@ -48,7 +47,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
 
     public void initPlayField()
     {
-        presenter.buildPlayField(this, topLayout, botLayout, new BuildPlayFieldImpl(rows, column));
+        presenter.buildPlayField(topLayout, botLayout, new BuildPlayFieldImpl(rows, column, this));
     }
 
     @Override
