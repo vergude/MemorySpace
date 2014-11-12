@@ -38,7 +38,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
     @Override
     public void buildPlayField(ViewGroup viewTop, ViewGroup viewBot)
     {
-        setRandomImagesUrl();
+        generateRandomImagesUrl();
 
         initPlayField(viewTop);
 
@@ -100,21 +100,22 @@ public class BuildPlayFieldImpl implements BuildPlayField
         return imageView;
     }
 
-    public void setRandomImagesUrl()
+    public void generateRandomImagesUrl()
     {
         ArrayList<String> allImagesUrlList = ImagesUtils.getAllRandomImagesUrl(IMAGE_PREFIX);
 
         imageUrlList = new ArrayList<String>();
 
-		int cellsCount = rows * column;
-        for (int i = 0; i < cellsCount; i++)
-        {
-            imageUrlList.add(allImagesUrlList.get(i));
-        }
+		imageUrlList.addAll(allImagesUrlList.subList(0, getCellsCount()));
     }
 
     private void handleException(IOException e)
     {
         Log.e("BuildPlayFieldImpl", e.getMessage());
     }
+
+	private int getCellsCount()
+	{
+		return rows * column;
+	}
 }

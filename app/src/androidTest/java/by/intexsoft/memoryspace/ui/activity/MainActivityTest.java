@@ -1,7 +1,6 @@
-package memoryspace.intexsoft.by.memoryspace.ui.activity;
+package by.intexsoft.memoryspace.ui.activity;
 
 import android.widget.Toast;
-import by.intexsoft.memoryspace.ui.activity.MainActivity;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,15 +30,33 @@ public class MainActivityTest
 	MainActivity mainActivity;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception
+	{
 		mainActivity = PowerMockito.spy(new MainActivity());
-
 	}
 
 	@Test
-	public void testGoToHelp() {
-		mainActivity.onButtonSize4Clicked();
+	public void testGoToPlayScreen()
+	{
+		mainActivity.onButtonSize2Clicked();
+		verify(mainActivity, never()).finish();
 
+		mainActivity.onButtonSize3Clicked();
+		verify(mainActivity, never()).finish();
+
+		mainActivity.onButtonSize4Clicked();
+		verify(mainActivity, never()).finish();
+
+		mainActivity.onButtonSize6Clicked();
+		verify(mainActivity, never()).finish();
+
+		mainActivity.onButtonSize12Clicked();
+		verify(mainActivity, never()).finish();
+
+		mainActivity.onButtonSize16Clicked();
+		verify(mainActivity, never()).finish();
+
+		mainActivity.onButtonSize16Clicked();
 		verify(mainActivity, never()).finish();
 	}
 }
