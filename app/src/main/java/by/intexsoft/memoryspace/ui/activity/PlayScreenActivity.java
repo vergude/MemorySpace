@@ -1,9 +1,6 @@
 package by.intexsoft.memoryspace.ui.activity;
 
 import android.app.Activity;
-import android.content.res.Configuration;;
-import android.os.Handler;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import by.intexsoft.memoryspace.R;
@@ -19,8 +16,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by anastasya.konovalova on 04.11.2014.
