@@ -107,7 +107,6 @@ public class BuildPlayFieldImpl implements BuildPlayField
                 imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
             }
         }
-
         catch (IOException e)
         {
             handleException(e);
