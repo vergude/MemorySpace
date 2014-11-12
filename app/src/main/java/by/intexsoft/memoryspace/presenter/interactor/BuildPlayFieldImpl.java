@@ -6,13 +6,12 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import by.intexsoft.memoryspace.util.ImagesUtils;
+import by.intexsoft.memoryspace.view.image_view.SquareImageView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import by.intexsoft.memoryspace.util.ImagesUtils;
-import by.intexsoft.memoryspace.view.image_view.SquareImageView;
 
 /**
  * Created by vadim on 07.11.2014.
@@ -77,9 +76,8 @@ public class BuildPlayFieldImpl implements BuildPlayField
 
     public LinearLayout.LayoutParams getParams()
     {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, 1f);
-        return params;
     }
 
     public void setMargins(LinearLayout.LayoutParams params)
@@ -108,7 +106,8 @@ public class BuildPlayFieldImpl implements BuildPlayField
 
         imageUrlList = new ArrayList<String>();
 
-        for (int i = 0; i < rows * column; i++)
+		int cellsCount = rows * column;
+        for (int i = 0; i < cellsCount; i++)
         {
             imageUrlList.add(allImagesUrlList.get(i));
         }
