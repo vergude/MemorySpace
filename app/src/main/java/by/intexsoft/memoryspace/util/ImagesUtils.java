@@ -34,4 +34,12 @@ public class ImagesUtils
         inputStream.close();
         return drawable;
     }
+
+    public static Drawable loadBackDrawableFromAsset(Context context, String prefixBack) throws IOException
+    {
+        InputStream inputStream = context.getAssets().open(prefixBack + ".jpg");
+        Drawable drawable = Drawable.createFromStream(inputStream, null);
+        inputStream.close();
+        return drawable;
+    }
 }
