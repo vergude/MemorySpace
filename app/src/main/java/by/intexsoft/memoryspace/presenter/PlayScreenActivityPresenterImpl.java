@@ -1,6 +1,5 @@
 package by.intexsoft.memoryspace.presenter;
 
-import android.content.Context;
 import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;

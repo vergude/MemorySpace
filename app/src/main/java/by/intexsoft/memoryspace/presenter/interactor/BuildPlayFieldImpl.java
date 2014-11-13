@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.image_view.SquareImageView;
 
@@ -16,17 +17,20 @@ import java.util.Collections;
 /**
  * Created by vadim on 07.11.2014.
  */
-
 public class BuildPlayFieldImpl implements BuildPlayField
 {
     private final static String IMAGE_PREFIX = "cars/car";
+    private final static String BACK_IMAGE_PREFIX = "back/question";
 
     private int rows;
     private int column;
-    private Context context;
 
+    private Context context;
     private int countImages;
     private ArrayList<String> imageUrlList;
+
+    private boolean faceImage = true;
+
 
     public BuildPlayFieldImpl(int rows, int column, Context context)
     {
@@ -38,19 +42,22 @@ public class BuildPlayFieldImpl implements BuildPlayField
     @Override
     public void buildPlayField(ViewGroup viewTop, ViewGroup viewBot)
     {
-        generateRandomImagesUrl();
+        if (faceImage)
+        {
+            setRandomImagesUrl();
+        }
 
         initPlayField(viewTop);
-
-        Collections.shuffle(imageUrlList);
-
+        faceImage = faceImage ? false : true;
         initPlayField(viewBot);
+
 
     }
 
     public void initPlayField(ViewGroup view)
     {
         countImages = 0;
+        Collections.shuffle(imageUrlList);
 
         for (int i = 0; i < rows; i++)
         {
@@ -90,32 +97,40 @@ public class BuildPlayFieldImpl implements BuildPlayField
         SquareImageView imageView = new SquareImageView(context);
         try
         {
-            imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, countImages));
+            if (faceImage)
+            {
+                imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, countImages));
+            }
+
+            else
+            {
+                imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
+            }
         }
         catch (IOException e)
         {
             handleException(e);
         }
+
         countImages++;
         return imageView;
     }
 
-    public void generateRandomImagesUrl()
+    public void setRandomImagesUrl()
     {
         ArrayList<String> allImagesUrlList = ImagesUtils.getAllRandomImagesUrl(IMAGE_PREFIX);
 
         imageUrlList = new ArrayList<String>();
 
-		imageUrlList.addAll(allImagesUrlList.subList(0, getCellsCount()));
+        int cellsCount = rows * column;
+        for (int i = 0; i < cellsCount; i++)
+        {
+            imageUrlList.add(allImagesUrlList.get(i));
+        }
     }
 
     private void handleException(IOException e)
     {
         Log.e("BuildPlayFieldImpl", e.getMessage());
     }
-
-	private int getCellsCount()
-	{
-		return rows * column;
-	}
 }
