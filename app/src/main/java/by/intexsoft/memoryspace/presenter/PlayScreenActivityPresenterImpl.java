@@ -39,6 +39,5 @@ public class PlayScreenActivityPresenterImpl implements PlayScreenActivityPresen
     public void buildPlayField(ViewGroup viewTop, ViewGroup viewBot, BuildPlayField interactor)
     {
         interactor.buildPlayField(viewTop, viewBot);
-
     }
 }
