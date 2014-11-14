@@ -130,7 +130,17 @@ public class BuildPlayFieldImpl implements BuildPlayField
 
                             ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
                             imageView.setImageDrawable(removeImageView.getDrawable());
+                            try
+                            {
+                                removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                            imageView.setActivated(false);
                             imageViewTopId = 0;
+                            clickBot = true;
                     }
                     }
                 });
@@ -160,11 +170,13 @@ public class BuildPlayFieldImpl implements BuildPlayField
                                 e.printStackTrace();
                             }
                             imageViewBotId = 0;
-                        }
+                        }else {
 
-                        if(imageView.isActivated() && clickBot)
-                        {
-                            //imageViewTopId = imageView.getId();
+                            if (imageView.isActivated() && clickBot) {
+                                imageViewTopId = imageView.getId();
+                                clickBot = false;
+                                imageView.setActivated(false);
+                            }
                         }
                     }
                 });
