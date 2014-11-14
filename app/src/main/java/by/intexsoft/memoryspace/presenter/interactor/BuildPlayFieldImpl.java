@@ -37,7 +37,6 @@ public class BuildPlayFieldImpl implements BuildPlayField
     private  int imageViewBotId = 0;
     private  int imageViewTopId = 0;
     private int position = 0;
-    private boolean clickBot = false;
 
     private Context context;
     private int countImages;
@@ -132,7 +131,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
                             imageView.setImageDrawable(removeImageView.getDrawable());
                             try
                             {
-                                removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
+                                removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
                             }
                             catch (IOException e)
                             {
@@ -140,7 +139,6 @@ public class BuildPlayFieldImpl implements BuildPlayField
                             }
                             imageView.setActivated(false);
                             imageViewTopId = 0;
-                            clickBot = true;
                     }
                     }
                 });
@@ -157,7 +155,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
                     public void onClick(View v)
                     {
                         if(imageViewBotId != 0)
-                        {   clickBot = true;
+                        {
                             ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
                             imageView.setImageDrawable(removeImageView.getDrawable());
                             imageView.setActivated(true);
@@ -172,9 +170,8 @@ public class BuildPlayFieldImpl implements BuildPlayField
                             imageViewBotId = 0;
                         }else {
 
-                            if (imageView.isActivated() && clickBot) {
+                            if (imageView.isActivated()) {
                                 imageViewTopId = imageView.getId();
-                                clickBot = false;
                                 imageView.setActivated(false);
                             }
                         }
