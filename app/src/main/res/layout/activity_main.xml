@@ -18,21 +18,24 @@
             android:layout_height="wrap_content"
             android:text="@string/two_cell"
             android:id="@+id/button_1x2"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/three_cell"
             android:id="@+id/button_1x3"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/four_cell"
             android:id="@+id/button_2x2"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonClicked"/>
 
 
     </LinearLayout>
@@ -47,27 +50,31 @@
             android:layout_height="wrap_content"
             android:text="@string/six_cell"
             android:id="@+id/button_2x3"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/twelve_cell"
             android:id="@+id/button_3x4"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonClicked"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sixteen_cell"
             android:id="@+id/button_4x4"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/thirty_cell"
             android:id="@+id/button_5x6"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonClicked"/>
     </LinearLayout>
 
 </LinearLayout>

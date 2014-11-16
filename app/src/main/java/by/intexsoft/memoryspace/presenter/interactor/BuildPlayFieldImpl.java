@@ -2,9 +2,6 @@ package by.intexsoft.memoryspace.presenter.interactor;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.androidannotations.annotations.Click;
-
-import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.image_view.SquareImageView;
 
@@ -25,7 +19,7 @@ import java.util.Collections;
 /**
  * Created by vadim on 07.11.2014.
  */
-public class BuildPlayFieldImpl implements BuildPlayField
+public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 {
     private final static String IMAGE_PREFIX = "cars/car";
     private final static String BACK_IMAGE_PREFIX = "back/question";
@@ -44,12 +38,20 @@ public class BuildPlayFieldImpl implements BuildPlayField
 
     private boolean faceImage = true;
 
+    private String[] firstImagesSet;
+    private String[] secondImagesSet;
+
+    private String currentTag;
+    private int currentId;
+
 
     public BuildPlayFieldImpl(int rows, int column, Context context)
     {
         this.rows = rows;
         this.column = column;
         this.context = context;
+        firstImagesSet = new String[getCellsCount()];
+        secondImagesSet = new String[getCellsCount()];
     }
 
     @Override
@@ -62,13 +64,13 @@ public class BuildPlayFieldImpl implements BuildPlayField
 
         initPlayField(viewTop);
         faceImage = faceImage ? false : true;
+        Collections.shuffle(imageUrlList);
         initPlayField(viewBot);
     }
 
     public void initPlayField(ViewGroup view)
     {
         countImages = 0;
-        Collections.shuffle(imageUrlList);
         for (int i = 0; i < rows; i++)
         {
             view.addView(getLayout());
@@ -114,7 +116,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
             {
                 imageView.setId(index + 100);
                 imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, countImages));
-
+                imageView.setTag(imageUrlList.get(countImages));
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v)
@@ -122,6 +124,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
                     if(!imageView.isActivated()) {
                         imageViewBotId = imageView.getId();
                         imageView.setActivated(true);
+                        currentTag = (String)imageView.getTag();
                     }
 
                     if(imageViewTopId != 0 && imageView.isActivated())
@@ -139,6 +142,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
                             }
                             imageView.setActivated(false);
                             imageViewTopId = 0;
+                            secondImagesSet[currentId]=null;
                     }
                     }
                 });
@@ -148,7 +152,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
             {
                 imageView.setId(index + 1000);
                 imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
-
+                imageView.setTag(countImages);
                 imageView.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -159,6 +163,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
                             ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
                             imageView.setImageDrawable(removeImageView.getDrawable());
                             imageView.setActivated(true);
+                            secondImagesSet[(Integer)imageView.getTag()] = currentTag;
                             try
                             {
                                 removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
@@ -173,6 +178,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
                             if (imageView.isActivated()) {
                                 imageViewTopId = imageView.getId();
                                 imageView.setActivated(false);
+                                currentId = (Integer)imageView.getTag();
                             }
                         }
                     }
@@ -194,6 +200,7 @@ public class BuildPlayFieldImpl implements BuildPlayField
 
         imageUrlList = new ArrayList<String>();
         imageUrlList.addAll(allImagesUrlList.subList(0, getCellsCount()));
+        firstImagesSet=imageUrlList.toArray(firstImagesSet);
     }
 
     private void handleException(IOException e)
@@ -204,6 +211,18 @@ public class BuildPlayFieldImpl implements BuildPlayField
     private int getCellsCount()
     {
         return rows * column;
+    }
+
+    @Override
+    public String[] getFirstImagesSet()
+    {
+        return firstImagesSet;
+    }
+
+    @Override
+    public String[] getSecondImagesSet()
+    {
+        return secondImagesSet;
     }
 
 }

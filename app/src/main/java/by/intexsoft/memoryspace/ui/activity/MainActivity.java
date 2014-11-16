@@ -1,8 +1,12 @@
 package by.intexsoft.memoryspace.ui.activity;
 
 import android.app.Activity;
+import android.util.Log;
+import android.view.View;
 
+import by.intexsoft.memoryspace.CellsCount;
 import by.intexsoft.memoryspace.R;
+import by.intexsoft.memoryspace.exception.ButtonClickException;
 import by.intexsoft.memoryspace.util.ActivityRunner;
 
 import org.androidannotations.annotations.Click;
@@ -15,51 +19,27 @@ import org.androidannotations.annotations.EActivity;
 public class MainActivity extends Activity
 {
 
-    @Click(R.id.button_1x2)
-    void onButtonSize2Clicked()
+    public void buttonClicked(View view)
     {
-        startPlayScreen(1, 2);
-    }
-
-    @Click(R.id.button_1x3)
-    void onButtonSize3Clicked()
-    {
-        startPlayScreen(1, 3);
-    }
-
-    @Click(R.id.button_2x2)
-    void onButtonSize4Clicked()
-    {
-        startPlayScreen(2, 2);
-    }
-
-    @Click(R.id.button_2x3)
-    void onButtonSize6Clicked()
-    {
-        startPlayScreen(2, 3);
-    }
-
-    @Click(R.id.button_3x4)
-    void onButtonSize12Clicked()
-    {
-        startPlayScreen(3, 4);
-    }
-
-    @Click(R.id.button_4x4)
-    void onButtonSize16Clicked()
-    {
-        startPlayScreen(4, 4);
-    }
-
-    @Click(R.id.button_5x6)
-    void onButtonSize30Clicked()
-    {
-        startPlayScreen(5, 6);
+        try
+        {
+            CellsCount cellsCount = CellsCount.getCells(view.getId());
+            startPlayScreen(cellsCount.getRows(), cellsCount.getColumn());
+        }
+        catch (ButtonClickException e)
+        {
+            haleException(e);
+        }
     }
 
     public void startPlayScreen(int rows, int column)
     {
         ActivityRunner.playScreenActivity(this).rows(rows).column(column).start();
+    }
+
+    public void haleException(ButtonClickException e)
+    {
+        Log.e("MainActivity", e.getMessage());
     }
 }
 

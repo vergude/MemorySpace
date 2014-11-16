@@ -1,21 +1,24 @@
 package by.intexsoft.memoryspace.ui.activity;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenter;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenterImpl;
-import by.intexsoft.memoryspace.presenter.interactor.BuildPlayField;
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayFieldImpl;
 import by.intexsoft.memoryspace.view.PlayScreenActivityView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Arrays;
 
 /**
  * Created by anastasya.konovalova on 04.11.2014.
@@ -26,7 +29,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
 {
     private final static int SLEEP_DELAY = 5000;
 
-    private BuildPlayField buildPlayField;
+    private BuildPlayFieldImpl buildPlayField;
 
     @Extra
     int rows;
@@ -74,6 +77,18 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     {
         topLayout.removeAllViewsInLayout();
         botLayout.removeAllViewsInLayout();
+    }
+
+    @Override
+    public void showGameResult(String result)
+    {
+        Log.d("end_game", result);
+    }
+
+    @Click
+    public void buttonCheck()
+    {
+        presenter.checkFinishGame(buildPlayField);
     }
 
 }

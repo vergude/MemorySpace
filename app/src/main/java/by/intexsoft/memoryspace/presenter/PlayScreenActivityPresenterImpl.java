@@ -4,7 +4,11 @@ import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
 
+import java.util.Arrays;
+
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayField;
+import by.intexsoft.memoryspace.presenter.interactor.OnFinishPlayListener;
+import by.intexsoft.memoryspace.util.CheckResult;
 import by.intexsoft.memoryspace.view.PlayScreenActivityView;
 
 /**
@@ -40,4 +44,12 @@ public class PlayScreenActivityPresenterImpl implements PlayScreenActivityPresen
     {
         interactor.buildPlayField(viewTop, viewBot);
     }
+
+    @Override
+    public void checkFinishGame(OnFinishPlayListener onFinishPlayListener)
+    {
+        playScreenActivityView.showGameResult(CheckResult.getResultGame(
+                onFinishPlayListener.getFirstImagesSet(), onFinishPlayListener.getSecondImagesSet()));
+    }
+
 }

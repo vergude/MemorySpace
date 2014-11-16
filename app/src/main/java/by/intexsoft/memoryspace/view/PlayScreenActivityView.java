@@ -5,5 +5,5 @@ package by.intexsoft.memoryspace.view;
  */
 public interface PlayScreenActivityView extends BaseView
 {
-
+    void showGameResult(String result);
 }
