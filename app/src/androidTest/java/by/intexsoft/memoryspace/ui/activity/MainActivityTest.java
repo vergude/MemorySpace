@@ -1,5 +1,6 @@
 package by.intexsoft.memoryspace.ui.activity;
 
+import android.view.View;
 import android.widget.Toast;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,6 +13,8 @@ import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -38,25 +41,10 @@ public class MainActivityTest
 	@Test
 	public void testGoToPlayScreen()
 	{
-		mainActivity.onButtonSize2Clicked();
-		verify(mainActivity, never()).finish();
+        View view = mock(View.class);
 
-		mainActivity.onButtonSize3Clicked();
-		verify(mainActivity, never()).finish();
+        mainActivity.buttonClicked(view);
 
-		mainActivity.onButtonSize4Clicked();
-		verify(mainActivity, never()).finish();
-
-		mainActivity.onButtonSize6Clicked();
-		verify(mainActivity, never()).finish();
-
-		mainActivity.onButtonSize12Clicked();
-		verify(mainActivity, never()).finish();
-
-		mainActivity.onButtonSize16Clicked();
-		verify(mainActivity, never()).finish();
-
-		mainActivity.onButtonSize16Clicked();
-		verify(mainActivity, never()).finish();
+        verify(mainActivity, never()).finish();
 	}
 }

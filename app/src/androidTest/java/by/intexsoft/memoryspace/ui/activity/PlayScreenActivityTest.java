@@ -1,9 +1,12 @@
 package by.intexsoft.memoryspace.ui.activity;
 
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenter;
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayField;
+import by.intexsoft.memoryspace.presenter.interactor.BuildPlayFieldImpl;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,7 +36,7 @@ public class PlayScreenActivityTest
 	@Rule
 	public PowerMockRule rule = new PowerMockRule();
 
-	PlayScreenActivity mainActivity;
+	PlayScreenActivity playScreenActivity;
 
 	@Mock
 	PlayScreenActivityPresenter mockPresenter;
@@ -41,26 +44,31 @@ public class PlayScreenActivityTest
 	@Before
 	public void setUp() throws Exception
 	{
-		mainActivity = PowerMockito.spy(new PlayScreenActivity());
-		mockPresenter = mock(PlayScreenActivityPresenter.class);
+        playScreenActivity = PowerMockito.spy(new PlayScreenActivity());
 
-		Whitebox.setInternalState(mainActivity, "presenter", mockPresenter);
+        LinearLayout linearLayoutTop = mock(LinearLayout.class);
+        Whitebox.setInternalState(playScreenActivity,"topLayout",linearLayoutTop);
+
+        LinearLayout linearLayoutBot = mock(LinearLayout.class);
+        Whitebox.setInternalState(playScreenActivity,"botLayout",linearLayoutBot);
+
+		mockPresenter = mock(PlayScreenActivityPresenter.class);
+		Whitebox.setInternalState(playScreenActivity, "presenter", mockPresenter);
 	}
 
 	@Test
 	public void testInit()
 	{
-		mainActivity.init();
+        playScreenActivity.init();
 
-		verify(mockPresenter).init(mainActivity);
-		verify(mainActivity).initPlayField();
+		verify(mockPresenter).init(playScreenActivity);
+		verify(playScreenActivity).initPlayField();
 	}
 
 	@Test
 	public void testInitPlayField()
 	{
-		mainActivity.initPlayField();
-
-		verify(mockPresenter).buildPlayField(any(ViewGroup.class), any(ViewGroup.class), any(BuildPlayField.class));
+        playScreenActivity.initPlayField();
+		verify(mockPresenter).buildPlayField(any(ViewGroup.class),any(ViewGroup.class),any(BuildPlayField.class));
 	}
 }
