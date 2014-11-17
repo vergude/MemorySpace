@@ -60,6 +60,13 @@
             android:layout_height="fill_parent"
             android:layout_weight="35"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/repeatButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Еще раз"
+                android:textSize="14dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,6 +82,7 @@
                 android:background="@color/white"
                 android:scaleType="fitXY"
                 android:src="@drawable/button_click"/>
+
         </LinearLayout>
 
         <LinearLayout

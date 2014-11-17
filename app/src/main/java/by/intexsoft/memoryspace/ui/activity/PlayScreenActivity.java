@@ -27,9 +27,9 @@ import java.util.Arrays;
 @EActivity(R.layout.activity_play_screen)
 public class PlayScreenActivity extends Activity implements PlayScreenActivityView
 {
-    private final static int SLEEP_DELAY = 5000;
+    private final static int SLEEP_DELAY = 1000;
 
-    private BuildPlayFieldImpl buildPlayField;
+    BuildPlayFieldImpl buildPlayField;
 
     @Extra
     int rows;
@@ -89,6 +89,13 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     public void buttonCheck()
     {
         presenter.checkFinishGame(buildPlayField);
+    }
+
+    @Click
+    public void repeatButton()
+    {
+        clearViews();
+        initPlayField();
     }
 
 }
