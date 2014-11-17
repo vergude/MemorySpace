@@ -1,5 +1,6 @@
-package by.intexsoft.memoryspace;
+package by.intexsoft.memoryspace.ui.model;
 
+import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.exception.ButtonClickException;
 
 /**

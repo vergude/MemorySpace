@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 
-import by.intexsoft.memoryspace.CellsCount;
+import by.intexsoft.memoryspace.ui.model.CellsCount;
 import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.exception.ButtonClickException;
 import by.intexsoft.memoryspace.util.ActivityRunner;
 
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 
 /**

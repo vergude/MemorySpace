@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import by.intexsoft.memoryspace.ui.model.PlayAreaType;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.image_view.SquareImageView;
 
@@ -36,8 +37,6 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     private int countImages;
     private ArrayList<String> imageUrlList;
 
-    private boolean faceImage = true;
-
     private String[] firstImagesSet;
     private String[] secondImagesSet;
 
@@ -57,27 +56,25 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     @Override
     public void buildPlayField(ViewGroup viewTop, ViewGroup viewBot)
     {
-        if (faceImage)
-        {
-            generateRandomImagesUrl();
-        }
 
-        initPlayField(viewTop);
-        faceImage = faceImage ? false : true;
+    	generateRandomImagesUrl();
+
+        initPlayField(viewTop, PlayAreaType.TOP);
+
         Collections.shuffle(imageUrlList);
-        initPlayField(viewBot);
+        initPlayField(viewBot, PlayAreaType.TOP);
     }
 
-    public void initPlayField(ViewGroup view)
+    public void initPlayField(ViewGroup view, PlayAreaType playAreaType)
     {
         countImages = 0;
         for (int i = 0; i < rows; i++)
         {
-            view.addView(getLayout());
+            view.addView(getLayout(playAreaType));
         }
     }
 
-    public LinearLayout getLayout()
+    public LinearLayout getLayout(PlayAreaType playAreaType)
     {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -89,7 +86,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
             LinearLayout.LayoutParams params = getParams();
             setMargins(params);
 
-            linearLayout.addView(getImageView(position), params);
+            linearLayout.addView(getImageView(position, playAreaType), params);
         }
         linearLayout.setGravity(Gravity.CENTER);
 
@@ -107,12 +104,12 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
         params.setMargins(5, 5, 5, 5);
     }
 
-    public ImageView getImageView(int index)
+    public ImageView getImageView(int index, PlayAreaType playAreaType)
     {
         final SquareImageView imageView = new SquareImageView(context);
         try
         {
-            if (faceImage)
+            if (playAreaType == PlayAreaType.TOP)
             {
                 imageView.setId(index + 100);
                 imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, countImages));
