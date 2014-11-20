@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.ui.model.PlayAreaType;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.image_view.SquareImageView;
@@ -145,6 +147,8 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 	{
 		final SquareImageView imageView = new SquareImageView(context);
 		imageView.setId(index + 100);
+        imageView.setPadding(10,10,10,10);
+        imageView.setBackground(context.getResources().getDrawable(R.drawable.image));
 		imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, position));
 		imageView.setTag(imageUrlList.get(position));
 		imageView.setOnClickListener(
@@ -155,6 +159,10 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 					{
 						if (imageViewTopId != 0 && !imageView.isActivated())
 						{
+
+                            imageViewTopId =0;
+                            imageViewBotId = imageView.getId();
+                            imageView.setActivated(true);
 							return;
 						}
 
@@ -164,6 +172,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 							{
 								ImageView oldSelectedImage = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
 								oldSelectedImage.setActivated(false);
+                                imageViewTopId = 0;
 							}
 
 							imageView.setActivated(true);
@@ -178,6 +187,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 							imageView.setImageDrawable(removeImageView.getDrawable());
 
 							removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
+                            removeImageView.setActivated(false);
 
 							imageView.setActivated(false);
 							imageViewTopId = 0;
@@ -192,6 +202,8 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 	{
 		final SquareImageView imageView = new SquareImageView(context);
 		imageView.setId(index + 1000);
+        imageView.setPadding(10,10,10,10);
+        imageView.setBackground(context.getResources().getDrawable(R.drawable.image));
 		imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
 		imageView.setTag(position);
 		imageView.setOnClickListener(
@@ -202,6 +214,11 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 					{
 						if (imageViewBotId != 0 && imageView.isActivated())
 						{
+                            ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
+                            removeImageView.setActivated(false);
+                            imageViewBotId = 0;
+                            imageViewTopId =imageView.getId();
+                            imageView.setActivated(true);
 							return;
 						}
 
@@ -222,7 +239,6 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 							if (imageView.isActivated())
 							{
 								imageViewTopId = imageView.getId();
-								imageView.setActivated(false);
 								currentId = (Integer) imageView.getTag();
 							}
 						}
