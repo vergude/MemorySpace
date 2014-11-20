@@ -27,19 +27,39 @@ public class ImagesUtils
 		return allIRandomImagesUrlList;
     }
 
-    public static Drawable loadDrawableFromAsset(Context context, ArrayList<String> imageUrlList, int countImages) throws IOException
+    public static Drawable loadDrawableFromAsset(Context context, ArrayList<String> imageUrlList, int countImages)
     {
-        InputStream inputStream = context.getAssets().open(imageUrlList.get(countImages));
-        Drawable drawable = Drawable.createFromStream(inputStream, null);
-        inputStream.close();
+		//TODO Load default image from resource with WARNING
+		Drawable drawable = null;
+		try
+		{
+			InputStream inputStream = context.getAssets().open(imageUrlList.get(countImages));
+			drawable = Drawable.createFromStream(inputStream, null);
+			inputStream.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
         return drawable;
     }
 
-    public static Drawable loadBackDrawableFromAsset(Context context, String prefixBack) throws IOException
+    public static Drawable loadBackDrawableFromAsset(Context context, String prefixBack)
     {
-        InputStream inputStream = context.getAssets().open(prefixBack + ".jpg");
-        Drawable drawable = Drawable.createFromStream(inputStream, null);
-        inputStream.close();
+		Drawable drawable = null;
+		try
+		{
+
+			InputStream inputStream = context.getAssets().open(prefixBack + ".jpg");
+			drawable = Drawable.createFromStream(inputStream, null);
+			inputStream.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
         return drawable;
     }
 }

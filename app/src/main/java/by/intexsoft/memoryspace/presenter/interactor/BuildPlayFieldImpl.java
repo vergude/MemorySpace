@@ -2,13 +2,13 @@ package by.intexsoft.memoryspace.presenter.interactor;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import by.intexsoft.memoryspace.ui.model.PlayAreaType;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.image_view.SquareImageView;
@@ -34,7 +34,6 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     private int position = 0;
 
     private Context context;
-    private int countImages;
     private ArrayList<String> imageUrlList;
 
     private String[] firstImagesSet;
@@ -54,20 +53,45 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     }
 
     @Override
-    public void buildPlayField(ViewGroup viewTop, ViewGroup viewBot)
+    public void buildPlayField(final ViewGroup viewTop, final ViewGroup viewBot)
     {
+		viewTop.removeAllViewsInLayout();
+		viewBot.removeAllViewsInLayout();
+
+		viewBot.setVisibility(View.INVISIBLE);
 
     	generateRandomImagesUrl();
 
         initPlayField(viewTop, PlayAreaType.TOP);
 
-        Collections.shuffle(imageUrlList);
-        initPlayField(viewBot, PlayAreaType.TOP);
+		Runnable runnable = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				showAreaForAnswer(viewTop, viewBot);
+			}
+		};
+
+		Handler mainHandler = new Handler(context.getMainLooper());
+		mainHandler.postDelayed(runnable, 2000);
+
     }
+
+	public void showAreaForAnswer(ViewGroup viewTop, ViewGroup viewBot)
+	{
+		viewTop.removeAllViewsInLayout();
+
+		initPlayField(viewTop, PlayAreaType.BOTTOM);
+
+		Collections.shuffle(imageUrlList);
+		initPlayField(viewBot, PlayAreaType.TOP);
+		viewBot.setVisibility(View.VISIBLE);
+	}
 
     public void initPlayField(ViewGroup view, PlayAreaType playAreaType)
     {
-        countImages = 0;
+		position = 0;
         for (int i = 0; i < rows; i++)
         {
             view.addView(getLayout(playAreaType));
@@ -82,11 +106,12 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 
         for (int i = 0; i < column; i++)
         {
-            position++;
             LinearLayout.LayoutParams params = getParams();
             setMargins(params);
 
             linearLayout.addView(getImageView(position, playAreaType), params);
+
+			position++;
         }
         linearLayout.setGravity(Gravity.CENTER);
 
@@ -106,90 +131,106 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 
     public ImageView getImageView(int index, PlayAreaType playAreaType)
     {
-        final SquareImageView imageView = new SquareImageView(context);
-        try
-        {
-            if (playAreaType == PlayAreaType.TOP)
-            {
-                imageView.setId(index + 100);
-                imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, countImages));
-                imageView.setTag(imageUrlList.get(countImages));
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    {
-                    if(!imageView.isActivated()) {
-                        imageViewBotId = imageView.getId();
-                        imageView.setActivated(true);
-                        currentTag = (String)imageView.getTag();
-                    }
-
-                    if(imageViewTopId != 0 && imageView.isActivated())
-                    {
-
-                            ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
-                            imageView.setImageDrawable(removeImageView.getDrawable());
-                            try
-                            {
-                                removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
-                            }
-                            catch (IOException e)
-                            {
-                                e.printStackTrace();
-                            }
-                            imageView.setActivated(false);
-                            imageViewTopId = 0;
-                            secondImagesSet[currentId]=null;
-                    }
-                    }
-                });
-            }
-
-            else
-            {
-                imageView.setId(index + 1000);
-                imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
-                imageView.setTag(countImages);
-                imageView.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if(imageViewBotId != 0)
-                        {
-                            ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
-                            imageView.setImageDrawable(removeImageView.getDrawable());
-                            imageView.setActivated(true);
-                            secondImagesSet[(Integer)imageView.getTag()] = currentTag;
-                            try
-                            {
-                                removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
-                            }
-                            catch (IOException e)
-                            {
-                                e.printStackTrace();
-                            }
-                            imageViewBotId = 0;
-                        }else {
-
-                            if (imageView.isActivated()) {
-                                imageViewTopId = imageView.getId();
-                                imageView.setActivated(false);
-                                currentId = (Integer)imageView.getTag();
-                            }
-                        }
-                    }
-                });
-            }
-        }
-        catch (IOException e)
-        {
-            handleException(e);
-        }
-
-        countImages++;
-        return imageView;
+		if (playAreaType == PlayAreaType.TOP)
+		{
+			return getImageWithPicture(index);
+		}
+		else
+		{
+			return getImageWithQuestion(index);
+		}
     }
+
+	private ImageView getImageWithPicture(int index)
+	{
+		final SquareImageView imageView = new SquareImageView(context);
+		imageView.setId(index + 100);
+		imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, position));
+		imageView.setTag(imageUrlList.get(position));
+		imageView.setOnClickListener(
+				new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						if (imageViewTopId != 0 && !imageView.isActivated())
+						{
+							return;
+						}
+
+						if (!imageView.isActivated())
+						{
+							if (imageViewBotId != 0)
+							{
+								ImageView oldSelectedImage = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
+								oldSelectedImage.setActivated(false);
+							}
+
+							imageView.setActivated(true);
+							imageViewBotId = imageView.getId();
+							currentTag = (String) imageView.getTag();
+						}
+
+						if (imageViewTopId != 0 && imageView.isActivated())
+						{
+
+							ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
+							imageView.setImageDrawable(removeImageView.getDrawable());
+
+							removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
+
+							imageView.setActivated(false);
+							imageViewTopId = 0;
+							secondImagesSet[currentId] = null;
+						}
+					}
+				});
+		return imageView;
+	}
+
+	private ImageView getImageWithQuestion(int index)
+	{
+		final SquareImageView imageView = new SquareImageView(context);
+		imageView.setId(index + 1000);
+		imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
+		imageView.setTag(position);
+		imageView.setOnClickListener(
+				new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						if (imageViewBotId != 0 && imageView.isActivated())
+						{
+							return;
+						}
+
+						if (imageViewBotId != 0)
+						{
+							ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
+							imageView.setImageDrawable(removeImageView.getDrawable());
+							imageView.setActivated(true);
+							secondImagesSet[(Integer) imageView.getTag()] = currentTag;
+
+							removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
+
+							imageViewBotId = 0;
+						}
+						else
+						{
+
+							if (imageView.isActivated())
+							{
+								imageViewTopId = imageView.getId();
+								imageView.setActivated(false);
+								currentId = (Integer) imageView.getTag();
+							}
+						}
+					}
+				});
+
+		return imageView;
+	}
 
     public void generateRandomImagesUrl()
     {
