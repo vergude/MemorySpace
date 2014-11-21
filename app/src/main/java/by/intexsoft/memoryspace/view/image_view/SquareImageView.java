@@ -23,4 +23,10 @@ public class SquareImageView extends ImageView
 
         setMeasuredDimension(Math.min(width, height), Math.min(width, height));
     }
+
+    public boolean isCellFree()
+    {
+        return this.isActivated();
+    }
+
 }

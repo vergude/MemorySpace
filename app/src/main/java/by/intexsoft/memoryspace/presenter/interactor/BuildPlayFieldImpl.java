@@ -157,16 +157,18 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 					@Override
 					public void onClick(View v)
 					{
-						if (imageViewTopId != 0 && !imageView.isActivated())
+                        //Если выбрана верхняя и нижняя не свободна
+						if (isMovingBotNotAvailable(imageView))
 						{
-
-                            imageViewTopId =0;
-                            imageViewBotId = imageView.getId();
-                            imageView.setActivated(true);
+//                            imageViewTopId = 0;
+//                            imageViewBotId = imageView.getId();
+//                            imageView.setActivated(true);
 							return;
 						}
 
-						if (!imageView.isActivated())
+
+                        //Если с картинкой
+						if (!imageView.isCellFree())
 						{
 							if (imageViewBotId != 0)
 							{
@@ -174,24 +176,18 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 								oldSelectedImage.setActivated(false);
                                 imageViewTopId = 0;
 							}
-
+                            //Запоминаем для перемещения
 							imageView.setActivated(true);
 							imageViewBotId = imageView.getId();
 							currentTag = (String) imageView.getTag();
+                            return;
 						}
 
-						if (imageViewTopId != 0 && imageView.isActivated())
+                        //Если верхняя выбрана и нижняя свободна
+						if (isMovingBotAvailable(imageView))
 						{
-
-							ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
-							imageView.setImageDrawable(removeImageView.getDrawable());
-
-							removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
-                            removeImageView.setActivated(false);
-
-							imageView.setActivated(false);
-							imageViewTopId = 0;
-							secondImagesSet[currentId] = null;
+                            //Перемещаем
+                            moveImageBot(imageView);
 						}
 					}
 				});
@@ -212,41 +208,101 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 					@Override
 					public void onClick(View v)
 					{
-						if (imageViewBotId != 0 && imageView.isActivated())
+                        //Если нижняя выбрана и верхняя свободна
+                        if (isMovingTopAvailable(imageView))
+                        {
+                            //Пемещяем
+                            moveImageTop(imageView);
+                            return;
+                        }
+
+                        //Если выбрана нижняя и верхняя не свободна
+						if (isMovingTopNotAvailable(imageView))
 						{
-                            ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
-                            removeImageView.setActivated(false);
-                            imageViewBotId = 0;
-                            imageViewTopId =imageView.getId();
-                            imageView.setActivated(true);
+//                            ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
+//                            removeImageView.setActivated(false);
+//                            imageViewBotId = 0;
+//                            imageViewTopId =imageView.getId();
+//                            imageView.setActivated(true);
 							return;
 						}
 
-						if (imageViewBotId != 0)
+                        //Если с картинкой
+						if (imageView.isCellFree())
 						{
-							ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
-							imageView.setImageDrawable(removeImageView.getDrawable());
-							imageView.setActivated(true);
-							secondImagesSet[(Integer) imageView.getTag()] = currentTag;
-
-							removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
-
-							imageViewBotId = 0;
-						}
-						else
-						{
-
-							if (imageView.isActivated())
-							{
-								imageViewTopId = imageView.getId();
-								currentId = (Integer) imageView.getTag();
-							}
+                            //Запоминаем для перемещения
+							imageViewTopId = imageView.getId();
+							currentId = (Integer) imageView.getTag();
 						}
 					}
 				});
 
 		return imageView;
 	}
+
+
+    public void moveImageTop(ImageView imageView)
+    {
+        ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
+        imageView.setImageDrawable(removeImageView.getDrawable());
+        imageView.setActivated(true);
+        secondImagesSet[(Integer) imageView.getTag()] = currentTag;
+
+        removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
+
+        imageViewBotId = 0;
+    }
+
+    public void moveImageBot(ImageView imageView)
+    {
+        ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
+        imageView.setImageDrawable(removeImageView.getDrawable());
+
+        removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
+        removeImageView.setActivated(false);
+
+        imageView.setActivated(false);
+        imageViewTopId = 0;
+        secondImagesSet[currentId] = null;
+    }
+
+    public boolean isMovingBotAvailable(SquareImageView imageView)
+    {
+        return isTopImageSelected() && imageView.isCellFree();
+    }
+
+    public boolean isMovingTopAvailable(SquareImageView imageView)
+    {
+        return isBotImageSelected() && !imageView.isCellFree();
+    }
+
+    public boolean isMovingBotNotAvailable(SquareImageView imageView)
+    {
+        return isTopImageSelected() && !imageView.isCellFree();
+    }
+
+    public boolean isMovingTopNotAvailable(SquareImageView imageView)
+    {
+        return isBotImageSelected() && imageView.isCellFree();
+    }
+
+    public boolean isBotImageSelected()
+    {
+        return imageViewBotId != 0;
+    }
+
+    public boolean isTopImageSelected()
+    {
+        return imageViewTopId != 0;
+    }
+
+    public boolean isCellFree(ImageView imageView)
+    {
+        return imageView.isActivated();
+    }
+
+
+
 
     public void generateRandomImagesUrl()
     {
