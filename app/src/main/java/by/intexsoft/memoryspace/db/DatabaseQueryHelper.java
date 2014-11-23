@@ -68,7 +68,7 @@ public class DatabaseQueryHelper
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLUMN_IMAGE_PATH, image);
             contentValues.put(COLUMN_IMAGE_WEIGHT, DEFAULT_WEIGHT);
-            getReadWriteDb().replace(TABLE_IMAGES, null, contentValues);
+            getReadWriteDb().insert(TABLE_IMAGES, null, contentValues);
         }
 
         showAllFields(getReadableDb().query(TABLE_IMAGES, null, null, null, null, null, null),
