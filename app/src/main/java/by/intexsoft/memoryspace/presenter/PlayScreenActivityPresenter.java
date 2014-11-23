@@ -1,6 +1,7 @@
 package by.intexsoft.memoryspace.presenter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.view.ViewGroup;
 
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayField;
@@ -15,4 +16,6 @@ public interface PlayScreenActivityPresenter extends BasePresenter <PlayScreenAc
     void buildPlayField(ViewGroup viewTop, ViewGroup viewBot,BuildPlayField interactor);
 
     void checkFinishGame(OnFinishPlayListener onFinishPlayListener);
+
+    void updateImagesWeight(Cursor cursor, Context context, int cellsCount);
 }
