@@ -1,8 +1,10 @@
 package by.intexsoft.memoryspace.util;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import by.intexsoft.memoryspace.Constant;
+import by.intexsoft.memoryspace.db.DatabaseQueryHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +27,18 @@ public class ImagesUtils
         Collections.shuffle(allIRandomImagesUrlList);
 
 		return allIRandomImagesUrlList;
+    }
+
+    public static ArrayList<String> getImageUrlListFromCursor(Cursor cursor, int imagesCount)
+    {
+        cursor.moveToFirst();
+        ArrayList<String> imagePathList = new ArrayList<String>();
+        for(int i=0;i<imagesCount;i++)
+        {
+            imagePathList.add(cursor.getString(cursor.getColumnIndex(DatabaseQueryHelper.COLUMN_IMAGE_PATH)));
+            cursor.moveToNext();
+        }
+        return imagePathList;
     }
 
     public static Drawable loadDrawableFromAsset(Context context, ArrayList<String> imageUrlList, int countImages)

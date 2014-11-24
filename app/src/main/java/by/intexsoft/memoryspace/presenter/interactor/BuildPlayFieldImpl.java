@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import by.intexsoft.memoryspace.R;
+import by.intexsoft.memoryspace.data.ImageViewCell;
 import by.intexsoft.memoryspace.ui.model.PlayAreaType;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.image_view.SquareImageView;
@@ -24,7 +25,7 @@ import java.util.Collections;
  */
 public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 {
-    private final static String IMAGE_PREFIX = "cars/car";
+//    private final static String IMAGE_PREFIX = "cars/car";
     private final static String BACK_IMAGE_PREFIX = "back/question";
     private final static String SELECT_IMAGE_PREFIX = "back/selected";
 
@@ -41,17 +42,17 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     private String[] firstImagesSet;
     private String[] secondImagesSet;
 
-    private String currentTag;
-    private int currentId;
-
-
-    public BuildPlayFieldImpl(int rows, int column, Context context)
+    public BuildPlayFieldImpl(int rows, int column, ArrayList<String> imageUrlList, Context context)
     {
         this.rows = rows;
         this.column = column;
         this.context = context;
+        this.imageUrlList = imageUrlList;
+
         firstImagesSet = new String[getCellsCount()];
         secondImagesSet = new String[getCellsCount()];
+
+        imageUrlList.toArray(firstImagesSet);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 
 		viewBot.setVisibility(View.INVISIBLE);
 
-    	generateRandomImagesUrl();
+//    	generateRandomImagesUrl();
 
         initPlayField(viewTop, PlayAreaType.TOP);
 
@@ -150,7 +151,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
         imageView.setPadding(10,10,10,10);
         imageView.setBackground(context.getResources().getDrawable(R.drawable.image));
 		imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, position));
-		imageView.setTag(imageUrlList.get(position));
+        imageView.setTag(new ImageViewCell(position,imageUrlList.get(position)));
 		imageView.setOnClickListener(
 				new View.OnClickListener()
 				{
@@ -180,7 +181,6 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 							imageView.setActivated(true);
                             imageView.setSelected(true);
 							imageViewBotId = imageView.getId();
-							currentTag = (String) imageView.getTag();
                             return;
 						}
 
@@ -202,7 +202,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
         imageView.setPadding(10,10,10,10);
         imageView.setBackground(context.getResources().getDrawable(R.drawable.image));
 		imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
-		imageView.setTag(position);
+        imageView.setTag(new ImageViewCell(position, null));
 		imageView.setOnClickListener(
 				new View.OnClickListener()
 				{
@@ -240,7 +240,6 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
                             //Запоминаем для перемещения
                             imageView.setSelected(true);
 							imageViewTopId = imageView.getId();
-							currentId = (Integer) imageView.getTag();
 						}
 					}
 				});
@@ -255,7 +254,8 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
         removeImageView.setSelected(false);
         imageView.setImageDrawable(removeImageView.getDrawable());
         imageView.setActivated(true);
-        secondImagesSet[(Integer) imageView.getTag()] = currentTag;
+
+        switchTagTop((ImageViewCell) removeImageView.getTag(), (ImageViewCell) imageView.getTag());
 
         removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, SELECT_IMAGE_PREFIX));
 
@@ -273,7 +273,21 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 
         imageView.setActivated(false);
         imageViewTopId = 0;
-        secondImagesSet[currentId] = null;
+
+        switchTagBot((ImageViewCell) removeImageView.getTag(), (ImageViewCell) imageView.getTag());
+    }
+
+    public void switchTagTop(ImageViewCell imageViewCellBot, ImageViewCell imageViewCellTop)
+    {
+        imageViewCellTop.setImagePath(imageViewCellBot.getImagePath());
+
+        secondImagesSet[imageViewCellTop.getId()] = imageViewCellTop.getImagePath();
+    }
+
+    public void switchTagBot(ImageViewCell imageViewCellTop, ImageViewCell imageViewCellBot)
+    {
+        secondImagesSet[imageViewCellTop.getId()] = null;
+        imageViewCellBot.setImagePath(imageViewCellTop.getImagePath());
     }
 
     public boolean isMovingBotAvailable(SquareImageView imageView)
@@ -311,17 +325,14 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
         return imageView.isActivated();
     }
 
-
-
-
-    public void generateRandomImagesUrl()
-    {
-        ArrayList<String> allImagesUrlList = ImagesUtils.getAllRandomImagesUrl(IMAGE_PREFIX);
-
-        imageUrlList = new ArrayList<String>();
-        imageUrlList.addAll(allImagesUrlList.subList(0, getCellsCount()));
-        firstImagesSet=imageUrlList.toArray(firstImagesSet);
-    }
+//    public void generateRandomImagesUrl()
+//    {
+//        ArrayList<String> allImagesUrlList = ImagesUtils.getAllRandomImagesUrl(IMAGE_PREFIX);
+//
+//        imageUrlList = new ArrayList<String>();
+//        imageUrlList.addAll(allImagesUrlList.subList(0, getCellsCount()));
+//        firstImagesSet=imageUrlList.toArray(firstImagesSet);
+//    }
 
     private void handleException(IOException e)
     {

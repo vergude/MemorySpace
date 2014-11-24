@@ -1,11 +1,14 @@
 package by.intexsoft.memoryspace.presenter;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
 
 import java.util.Arrays;
 
+import by.intexsoft.memoryspace.db.DatabaseQueryHelper_;
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayField;
 import by.intexsoft.memoryspace.presenter.interactor.OnFinishPlayListener;
 import by.intexsoft.memoryspace.util.CheckResult;
@@ -50,6 +53,20 @@ public class PlayScreenActivityPresenterImpl implements PlayScreenActivityPresen
     {
         playScreenActivityView.showGameResult(CheckResult.getResultGame(
                 onFinishPlayListener.getFirstImagesSet(), onFinishPlayListener.getSecondImagesSet()));
+    }
+
+    @Override
+    public void updateImagesWeight(final Cursor cursor, final Context context, final int cellsCount)
+    {
+        Runnable runnable = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                DatabaseQueryHelper_.getInstance_(context).updateImagesWeight(cursor,cellsCount);
+            }
+        };
+        runnable.run();
     }
 
 }

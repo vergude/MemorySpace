@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -25,7 +24,6 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -47,7 +45,7 @@ public class BuildPlayFieldImplTest
 	@Before
 	public void setUp() throws Exception
 	{
-		buildPlayerFieldImpl = new BuildPlayFieldImpl(ROWS, COLUMNS, mock(Context.class));
+		buildPlayerFieldImpl = new BuildPlayFieldImpl(ROWS, COLUMNS, pathList, mock(Context.class));
 	}
 
 	@Test
