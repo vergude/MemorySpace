@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.data.loader.PlayScreenActivityCursorLoader;
@@ -30,11 +33,15 @@ import java.util.ArrayList;
  */
 
 @EActivity(R.layout.activity_play_screen)
-public class PlayScreenActivity extends Activity implements PlayScreenActivityView, LoaderManager.LoaderCallbacks<Cursor>
+public class PlayScreenActivity extends Activity implements PlayScreenActivityView, LoaderManager.LoaderCallbacks<Cursor>,
+        SoundPool.OnLoadCompleteListener
 {
     private final static int SLEEP_DELAY = 1000;
 
     BuildPlayFieldImpl buildPlayField;
+
+    private SoundPool soundPool;
+    int soundVictoryId;
 
     @Extra
     int rows;
@@ -55,6 +62,14 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     public void init()
     {
         presenter.init(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        soundPool.setOnLoadCompleteListener(this);
+        soundVictoryId = soundPool.load(this,R.raw.victory,1);
     }
 
     @Override
@@ -86,7 +101,19 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     @Override
     public void showGameResult(String result)
     {
-        Log.d("end_game", result);
+        if(result.equals("win_game"))
+        {
+            Toast.makeText(this,"Победа", Toast.LENGTH_LONG).show();
+
+            soundPool.play(soundVictoryId,1, 1, 0, 0, 1);
+
+            clearViews();
+            getLoaderManager().restartLoader(0, null, this);
+        }
+        else
+        {
+            Toast.makeText(this,"Неправильно пробуй еще!", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Click
@@ -127,6 +154,11 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     public int getCellsCount()
     {
         return rows * column;
+    }
+
+    @Override
+    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+
     }
 }
 
