@@ -178,6 +178,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 							}
                             //Запоминаем для перемещения
 							imageView.setActivated(true);
+                            imageView.setSelected(true);
 							imageViewBotId = imageView.getId();
 							currentTag = (String) imageView.getTag();
                             return;
@@ -230,7 +231,14 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
                         //Если с картинкой
 						if (imageView.isCellFree())
 						{
+                            if (imageViewTopId != 0)
+                            {
+                                ImageView oldSelectedImage = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
+                                oldSelectedImage.setSelected(false);
+                            }
+
                             //Запоминаем для перемещения
+                            imageView.setSelected(true);
 							imageViewTopId = imageView.getId();
 							currentId = (Integer) imageView.getTag();
 						}
@@ -244,6 +252,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     public void moveImageTop(ImageView imageView)
     {
         ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewBotId));
+        removeImageView.setSelected(false);
         imageView.setImageDrawable(removeImageView.getDrawable());
         imageView.setActivated(true);
         secondImagesSet[(Integer) imageView.getTag()] = currentTag;
@@ -256,6 +265,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     public void moveImageBot(ImageView imageView)
     {
         ImageView removeImageView = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
+        removeImageView.setSelected(false);
         imageView.setImageDrawable(removeImageView.getDrawable());
 
         removeImageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
