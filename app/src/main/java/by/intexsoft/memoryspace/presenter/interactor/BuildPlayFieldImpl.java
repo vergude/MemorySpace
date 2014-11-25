@@ -241,6 +241,26 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
                             imageView.setSelected(true);
 							imageViewTopId = imageView.getId();
 						}
+
+                        //Если без картинки и выбрана верхняя
+                        if(!imageView.isCellFree() && imageViewTopId != 0)
+                        {
+                            //Меняем местами
+                            ImageView oldSelectedImage = ((ImageView) ((Activity) context).findViewById(imageViewTopId));
+
+                            imageView.setActivated(true);
+                            imageView.setImageDrawable(oldSelectedImage.getDrawable());
+
+                            oldSelectedImage.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
+                            oldSelectedImage.setActivated(false);
+                            oldSelectedImage.setSelected(false);
+
+
+                            switchTagTop((ImageViewCell) oldSelectedImage.getTag(), (ImageViewCell) imageView.getTag());
+                            imageViewTopId = 0;
+
+                            return;
+                        }
 					}
 				});
 

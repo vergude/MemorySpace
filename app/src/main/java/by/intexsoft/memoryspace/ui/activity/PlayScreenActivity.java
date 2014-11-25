@@ -1,6 +1,7 @@
 package by.intexsoft.memoryspace.ui.activity;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import by.intexsoft.memoryspace.data.loader.PlayScreenActivityCursorLoader;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenter;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenterImpl;
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayFieldImpl;
+import by.intexsoft.memoryspace.ui.VictoryDialog;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.PlayScreenActivityView;
 
@@ -36,9 +38,9 @@ import java.util.ArrayList;
 public class PlayScreenActivity extends Activity implements PlayScreenActivityView, LoaderManager.LoaderCallbacks<Cursor>,
         SoundPool.OnLoadCompleteListener
 {
-    private final static int SLEEP_DELAY = 1000;
-
     BuildPlayFieldImpl buildPlayField;
+
+    DialogFragment dialogFragment;
 
     private SoundPool soundPool;
     int soundVictoryId;
@@ -103,12 +105,10 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     {
         if(result.equals("win_game"))
         {
-            Toast.makeText(this,"Победа", Toast.LENGTH_LONG).show();
-
-            soundPool.play(soundVictoryId,1, 1, 0, 0, 1);
-
-            clearViews();
-            getLoaderManager().restartLoader(0, null, this);
+            int streamId = soundPool.play(soundVictoryId,1, 1, 0, 0, 1);
+            dialogFragment = new VictoryDialog(soundPool, getLoaderManager(),streamId, this);
+            dialogFragment.show(getFragmentManager(),"dialogVictory");
+            dialogFragment.setCancelable(false);
         }
         else
         {
