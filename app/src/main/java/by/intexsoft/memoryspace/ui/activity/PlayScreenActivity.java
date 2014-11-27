@@ -44,6 +44,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
 
     private SoundPool soundPool;
     int soundVictoryId;
+    int soundFailureId;
 
     @Extra
     int rows;
@@ -72,6 +73,8 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
         soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
         soundPool.setOnLoadCompleteListener(this);
         soundVictoryId = soundPool.load(this,R.raw.victory,1);
+        soundFailureId = soundPool.load(this,R.raw.failure,1);
+
     }
 
     @Override
@@ -112,7 +115,8 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
         }
         else
         {
-            Toast.makeText(this,"Неправильно пробуй еще!", Toast.LENGTH_LONG).show();
+            soundPool.play(soundFailureId,1, 1, 0, 0, 1);
+            Toast.makeText(this,"Неправильно пробуй еще!", Toast.LENGTH_SHORT).show();
         }
     }
 
