@@ -1,14 +1,11 @@
 package by.intexsoft.memoryspace.ui.activity;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.Loader;
-import android.os.Bundle;
+
 import android.util.Log;
 import android.view.View;
 
 import by.intexsoft.memoryspace.db.DatabaseQueryHelper_;
-import by.intexsoft.memoryspace.presenter.interactor.BuildPlayField;
 import by.intexsoft.memoryspace.ui.model.CellsCount;
 import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.exception.ButtonClickException;
@@ -16,10 +13,15 @@ import by.intexsoft.memoryspace.util.ActivityRunner;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+
 
 /**
  * Created by anastasya.konovalova on 04.11.2014.
  */
+
+@OptionsMenu(R.menu.activity_main_menu)
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity
 {
@@ -59,6 +61,12 @@ public class MainActivity extends Activity
     public void haleException(ButtonClickException e)
     {
         Log.e("MainActivity", e.getMessage());
+    }
+
+    @OptionsItem(R.id.downloadImages)
+    public void startDownloadPicturesActivity()
+    {
+        ActivityRunner.downloadPicturesActivity(this).start();
     }
 }
 

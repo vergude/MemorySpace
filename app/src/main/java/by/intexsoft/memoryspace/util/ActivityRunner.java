@@ -2,6 +2,7 @@ package by.intexsoft.memoryspace.util;
 
 import android.content.Context;
 
+import by.intexsoft.memoryspace.ui.activity.DownloadPicturesActivity_;
 import by.intexsoft.memoryspace.ui.activity.PlayScreenActivity_;
 
 /**
@@ -17,5 +18,10 @@ public class ActivityRunner
     public static PlayScreenActivity_.IntentBuilder_ playScreenActivity(Context context)
     {
         return PlayScreenActivity_.intent(context);
+    }
+
+    public static DownloadPicturesActivity_.IntentBuilder_ downloadPicturesActivity(Context context)
+    {
+        return DownloadPicturesActivity_.intent(context);
     }
 }
