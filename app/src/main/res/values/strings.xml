@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Memory Space</string>
 
-    <string name="two_cell">1x2</string>
-    <string name="three_cell">1x3</string>
-    <string name="four_cell">2x2</string>
-    <string name="six_cell">2x3</string>
-    <string name="twelve_cell">3x4</string>
-    <string name="sixteen_cell">4x4</string>
-    <string name="thirty_cell">5x6</string>
+    <string name="two_cell">Уровень 1x2</string>
+    <string name="three_cell">Уровень 1x3</string>
+    <string name="four_cell">Уровень 2x2</string>
+    <string name="six_cell">Уровень 2x3</string>
+    <string name="twelve_cell">Уровень 3x4</string>
+    <string name="sixteen_cell">Уровень 4x4</string>
+    <string name="thirty_cell">Уровень 5x6</string>
 </resources>

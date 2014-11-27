@@ -10,5 +10,7 @@
 
     <color name="winTextColor">#0c9d0c</color>
 
-    <color name="rateTextColor">#2475c8</color>
+    <color name="darcBlueColor">#2475c8</color>
+
+    <color name="blueColor">#24baf1</color>
 </resources>

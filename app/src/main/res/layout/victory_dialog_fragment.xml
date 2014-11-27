@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="Время : 1:00"
                 android:textStyle="bold"
-                android:textColor="@color/rateTextColor"
+                android:textColor="@color/darcBlueColor"
                 android:layout_gravity="right"
                 android:textSize="20dp"
                 android:id="@+id/textRate" />
@@ -42,7 +42,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Счет : 100"
                 android:textStyle="bold"
-                android:textColor="@color/rateTextColor"
+                android:textColor="@color/darcBlueColor"
                 android:layout_gravity="right"
                 android:textSize="20dp"
                 android:id="@+id/TextTime" />

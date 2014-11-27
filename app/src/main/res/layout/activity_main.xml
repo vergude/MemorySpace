@@ -8,7 +8,7 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
@@ -16,24 +16,39 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_level"
+            android:textColor="@color/white"
             android:text="@string/two_cell"
             android:id="@+id/button_1x2"
+            android:layout_margin="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_level"
+            android:textColor="@color/white"
             android:text="@string/three_cell"
             android:id="@+id/button_1x3"
+            android:layout_margin="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_level"
+            android:textColor="@color/white"
             android:text="@string/four_cell"
             android:id="@+id/button_2x2"
+            android:layout_margin="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
 
@@ -41,38 +56,58 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_level"
+            android:textColor="@color/white"
             android:text="@string/six_cell"
             android:id="@+id/button_2x3"
+            android:layout_margin="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_level"
+            android:textColor="@color/white"
             android:text="@string/twelve_cell"
             android:id="@+id/button_3x4"
+            android:layout_margin="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_level"
+            android:textColor="@color/white"
             android:text="@string/sixteen_cell"
             android:id="@+id/button_4x4"
+            android:layout_margin="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_level"
+            android:textColor="@color/white"
             android:text="@string/thirty_cell"
             android:id="@+id/button_5x6"
+            android:layout_margin="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
     </LinearLayout>
