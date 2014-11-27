@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="500px"
+    android:minWidth="650px">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="left"
+            android:id="@+id/imageView"
+            android:background="@drawable/victory" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Время : 1:00"
+                android:textStyle="bold"
+                android:textColor="@color/rateTextColor"
+                android:layout_gravity="right"
+                android:textSize="20dp"
+                android:id="@+id/textRate" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Счет : 100"
+                android:textStyle="bold"
+                android:textColor="@color/rateTextColor"
+                android:layout_gravity="right"
+                android:textSize="20dp"
+                android:id="@+id/TextTime" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вы победили!"
+        android:textStyle="bold"
+        android:textColor="@color/winTextColor"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:textSize="20dp"
+        android:id="@+id/textView" />
+
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageBackMenu"
+            android:layout_gravity="left|top"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/image_menu"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageRepeatGame"
+            android:layout_gravity="right|top"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/image_repeat"/>
+    </FrameLayout>
+
+</LinearLayout>
