@@ -2,8 +2,9 @@ package by.intexsoft.memoryspace.presenter.download_pictures_interactor;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Environment;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
 
@@ -24,8 +25,12 @@ public class DownloadPicturesImpl implements DownloadPictures
     @Override
     public void startDownload()
     {
-        DownloadManager manager = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
-        manager.enqueue(getRequest());
+        if (isNetworkConnected())
+        {
+            DownloadManager manager = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
+            manager.enqueue(getRequest());
+        }
+
     }
 
     public DownloadManager.Request getRequest()
@@ -38,5 +43,16 @@ public class DownloadPicturesImpl implements DownloadPictures
 
         request.setDestinationInExternalFilesDir(context, null, nameOfFile);
         return request;
+    }
+
+    private boolean isNetworkConnected()
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null)
+        {
+            return false;
+        }
+        return true;
     }
 }

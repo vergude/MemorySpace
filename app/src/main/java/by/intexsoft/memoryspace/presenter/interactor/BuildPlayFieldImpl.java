@@ -256,7 +256,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
                             oldSelectedImage.setSelected(false);
 
 
-                            switchTagTop((ImageViewCell) oldSelectedImage.getTag(), (ImageViewCell) imageView.getTag());
+                            switchImages((ImageViewCell) oldSelectedImage.getTag(), (ImageViewCell) imageView.getTag());
                             imageViewTopId = 0;
 
                             return;
@@ -300,14 +300,20 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     public void switchTagTop(ImageViewCell imageViewCellBot, ImageViewCell imageViewCellTop)
     {
         imageViewCellTop.setImagePath(imageViewCellBot.getImagePath());
-
         secondImagesSet[imageViewCellTop.getId()] = imageViewCellTop.getImagePath();
     }
 
     public void switchTagBot(ImageViewCell imageViewCellTop, ImageViewCell imageViewCellBot)
     {
-        secondImagesSet[imageViewCellTop.getId()] = null;
         imageViewCellBot.setImagePath(imageViewCellTop.getImagePath());
+        secondImagesSet[imageViewCellTop.getId()] = null;
+    }
+
+    public void switchImages(ImageViewCell oldImageView, ImageViewCell newImageView)
+    {
+        newImageView.setImagePath(oldImageView.getImagePath());
+        secondImagesSet[oldImageView.getId()] = null;
+        secondImagesSet[newImageView.getId()] = newImageView.getImagePath();
     }
 
     public boolean isMovingBotAvailable(SquareImageView imageView)
