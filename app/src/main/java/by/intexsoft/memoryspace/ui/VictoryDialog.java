@@ -12,12 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 
 import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.util.ActivityRunner;
+import by.intexsoft.memoryspace.util.GameTimer;
+import by.intexsoft.memoryspace.view.VictoryDialogListener;
 
 /**
  * Created by Евгений on 25.11.2014.
@@ -25,17 +28,13 @@ import by.intexsoft.memoryspace.util.ActivityRunner;
 
 public class VictoryDialog extends DialogFragment
 {
-    private SoundPool soundPool;
-    private LoaderManager loaderManager;
-    private int streamId;
-    private LoaderManager.LoaderCallbacks loaderCallbacks;
+    private VictoryDialogListener victoryDialogListener;
+    private String gameTime;
 
-    public VictoryDialog(SoundPool soundPool, LoaderManager loaderManager, int streamId, LoaderManager.LoaderCallbacks loaderCallbacks)
+    public VictoryDialog(String gameTime,VictoryDialogListener victoryDialogListener)
     {
-        this.soundPool = soundPool;
-        this.loaderManager = loaderManager;
-        this.streamId = streamId;
-        this.loaderCallbacks = loaderCallbacks;
+        this.victoryDialogListener = victoryDialogListener;
+        this.gameTime = gameTime;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +43,7 @@ public class VictoryDialog extends DialogFragment
         View v = inflater.inflate(R.layout.victory_dialog_fragment, null);
         v.findViewById(R.id.imageRepeatGame).setOnClickListener(repeatClick);
         v.findViewById(R.id.imageBackMenu).setOnClickListener(menuClick);
+        ((TextView) v.findViewById(R.id.gameTime)).setText("Время : " + gameTime);
         return v;
     }
 
@@ -58,19 +58,14 @@ public class VictoryDialog extends DialogFragment
     View.OnClickListener repeatClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            soundPool.stop(streamId);
-            loaderManager.restartLoader(0, null,loaderCallbacks);
-            dismiss();
+            victoryDialogListener.onRepeatGame();
         }
     };
 
     View.OnClickListener menuClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            soundPool.stop(streamId);
-            soundPool.release();
-            getActivity().finish();
-            dismiss();
+            victoryDialogListener.onBackMenu();
         }
     };
 }

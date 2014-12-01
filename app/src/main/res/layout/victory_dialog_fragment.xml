@@ -30,12 +30,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Время : 1:00"
                 android:textStyle="bold"
                 android:textColor="@color/darcBlueColor"
                 android:layout_gravity="right"
                 android:textSize="20dp"
-                android:id="@+id/textRate" />
+                android:id="@+id/gameTime" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

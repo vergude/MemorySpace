@@ -8,9 +8,10 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.util.Log;
+
+import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.data.loader.PlayScreenActivityCursorLoader;
@@ -18,10 +19,13 @@ import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenter;
 import by.intexsoft.memoryspace.presenter.PlayScreenActivityPresenterImpl;
 import by.intexsoft.memoryspace.presenter.interactor.BuildPlayFieldImpl;
 import by.intexsoft.memoryspace.ui.VictoryDialog;
+import by.intexsoft.memoryspace.util.GameTimer;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.PlayScreenActivityView;
+import by.intexsoft.memoryspace.view.VictoryDialogListener;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -36,15 +40,18 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_play_screen)
 public class PlayScreenActivity extends Activity implements PlayScreenActivityView, LoaderManager.LoaderCallbacks<Cursor>,
-        SoundPool.OnLoadCompleteListener
+        SoundPool.OnLoadCompleteListener, VictoryDialogListener
 {
     BuildPlayFieldImpl buildPlayField;
 
     DialogFragment dialogFragment;
 
+    private GameTimer gameTimer;
+
     private SoundPool soundPool;
-    int soundVictoryId;
-    int soundFailureId;
+    private int soundVictoryId;
+    private int soundFailureId;
+    private int streamId;
 
     @Extra
     int rows;
@@ -54,6 +61,9 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
 
     @ViewById
     LinearLayout topLayout;
+
+    @ViewById(R.id.roundTime)
+    TextView roundTime;
 
     @ViewById
     LinearLayout botLayout;
@@ -67,9 +77,17 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
         presenter.init(this);
     }
 
+    @AfterViews
+    public void startGame()
+    {
+        gameTimer = new GameTimer(this,roundTime);
+        gameTimer.startTimer();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
         soundPool.setOnLoadCompleteListener(this);
         soundVictoryId = soundPool.load(this,R.raw.victory,1);
@@ -81,6 +99,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     protected void onResume()
     {
         super.onResume();
+
         getLoaderManager().restartLoader(0, null, this);
     }
 
@@ -108,15 +127,15 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     {
         if(result.equals("win_game"))
         {
-            int streamId = soundPool.play(soundVictoryId,1, 1, 0, 0, 1);
-            dialogFragment = new VictoryDialog(soundPool, getLoaderManager(),streamId, this);
+            gameTimer.stopTimer();
+            streamId = soundPool.play(soundVictoryId,1, 1, 0, 0, 1);
+            dialogFragment = new VictoryDialog(gameTimer.getText().toString(),this);
             dialogFragment.show(getFragmentManager(),"dialogVictory");
             dialogFragment.setCancelable(false);
         }
         else
         {
             soundPool.play(soundFailureId,1, 1, 0, 0, 1);
-            Toast.makeText(this,"Неправильно пробуй еще!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -163,6 +182,23 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     @Override
     public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
 
+    }
+
+
+    @Override
+    public void onRepeatGame()
+    {
+        soundPool.stop(streamId);
+        getLoaderManager().restartLoader(0, null, this);
+        gameTimer.startTimer();
+        dialogFragment.dismiss();
+    }
+
+    @Override
+    public void onBackMenu() {
+        soundPool.stop(streamId);
+        soundPool.release();
+        this.finish();
     }
 }
 
