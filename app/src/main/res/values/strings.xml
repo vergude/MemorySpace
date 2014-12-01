@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Memory Space</string>
 
+    <string name="app_name">Memory Space</string>
     <string name="two_cell">Уровень 1x2</string>
     <string name="three_cell">Уровень 1x3</string>
     <string name="four_cell">Уровень 2x2</string>
@@ -8,4 +9,7 @@
     <string name="twelve_cell">Уровень 3x4</string>
     <string name="sixteen_cell">Уровень 4x4</string>
     <string name="thirty_cell">Уровень 5x6</string>
+    <string name="download_images">Download pictures</string>
+    <string name="title_activity_download_pictures">DownloadPicturesActivity</string>
+
 </resources>
