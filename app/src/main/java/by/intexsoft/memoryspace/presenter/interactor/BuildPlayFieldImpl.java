@@ -14,6 +14,7 @@ import by.intexsoft.memoryspace.R;
 import by.intexsoft.memoryspace.data.ImageViewCell;
 import by.intexsoft.memoryspace.ui.model.PlayAreaType;
 import by.intexsoft.memoryspace.util.ImagesUtils;
+import by.intexsoft.memoryspace.view.TimerView;
 import by.intexsoft.memoryspace.view.image_view.SquareImageView;
 
 import java.io.IOException;
@@ -32,6 +33,8 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     private int rows;
     private int column;
 
+    private TimerView timerView;
+
     private  int imageViewBotId = 0;
     private  int imageViewTopId = 0;
     private int position = 0;
@@ -42,9 +45,10 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
     private String[] firstImagesSet;
     private String[] secondImagesSet;
 
-    public BuildPlayFieldImpl(int rows, int column, ArrayList<String> imageUrlList, Context context)
+    public BuildPlayFieldImpl(int rows, int column, ArrayList<String> imageUrlList, Context context, TimerView timerView)
     {
         this.rows = rows;
+        this.timerView = timerView;
         this.column = column;
         this.context = context;
         this.imageUrlList = imageUrlList;
@@ -73,6 +77,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 			public void run()
 			{
 				showAreaForAnswer(viewTop, viewBot);
+                timerView.showTimer();
 			}
 		};
 

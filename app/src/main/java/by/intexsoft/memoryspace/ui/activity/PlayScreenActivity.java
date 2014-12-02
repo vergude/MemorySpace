@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,10 +23,10 @@ import by.intexsoft.memoryspace.ui.VictoryDialog;
 import by.intexsoft.memoryspace.util.GameTimer;
 import by.intexsoft.memoryspace.util.ImagesUtils;
 import by.intexsoft.memoryspace.view.PlayScreenActivityView;
+import by.intexsoft.memoryspace.view.TimerView;
 import by.intexsoft.memoryspace.view.VictoryDialogListener;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_play_screen)
 public class PlayScreenActivity extends Activity implements PlayScreenActivityView, LoaderManager.LoaderCallbacks<Cursor>,
-        SoundPool.OnLoadCompleteListener, VictoryDialogListener
+        SoundPool.OnLoadCompleteListener, VictoryDialogListener, TimerView
 {
     BuildPlayFieldImpl buildPlayField;
 
@@ -80,14 +81,12 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     @AfterViews
     public void startGame()
     {
-        gameTimer = new GameTimer(this,roundTime);
-        gameTimer.startTimer();
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
         soundPool.setOnLoadCompleteListener(this);
         soundVictoryId = soundPool.load(this,R.raw.victory,1);
@@ -99,13 +98,12 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     protected void onResume()
     {
         super.onResume();
-
         getLoaderManager().restartLoader(0, null, this);
     }
 
     public void initPlayField(ArrayList<String> imageUrlList)
     {
-        buildPlayField = new BuildPlayFieldImpl(rows, column, imageUrlList, this);
+        buildPlayField = new BuildPlayFieldImpl(rows, column, imageUrlList, this,this);
         presenter.buildPlayField(topLayout, botLayout, buildPlayField);
     }
 
@@ -148,6 +146,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     @Click
     public void repeatButton()
     {
+        gameTimer.stopTimer();
         clearViews();
         getLoaderManager().restartLoader(0, null, this);
     }
@@ -190,7 +189,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     {
         soundPool.stop(streamId);
         getLoaderManager().restartLoader(0, null, this);
-        gameTimer.startTimer();
+        //gameTimer.startTimer();
         dialogFragment.dismiss();
     }
 
@@ -199,6 +198,12 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
         soundPool.stop(streamId);
         soundPool.release();
         this.finish();
+    }
+
+    @Override
+    public void showTimer() {
+        gameTimer = new GameTimer(this,roundTime);
+        gameTimer.startTimer();
     }
 }
 
