@@ -37,7 +37,7 @@ public class DownloadPicturesImpl implements DownloadPictures
     {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         String nameOfFile = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
 
