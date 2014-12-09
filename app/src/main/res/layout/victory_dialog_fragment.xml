@@ -4,8 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="500px"
-    android:minWidth="650px">
+    android:minHeight="250dp"
+    android:minWidth="320dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -39,12 +39,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Счет : 100"
                 android:textStyle="bold"
                 android:textColor="@color/darcBlueColor"
                 android:layout_gravity="right"
                 android:textSize="20dp"
-                android:id="@+id/TextTime" />
+                android:id="@+id/scoreText" />
         </LinearLayout>
 
     </LinearLayout>
@@ -52,34 +51,52 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Вы победили!"
+        android:text="Victory!"
         android:textStyle="bold"
         android:textColor="@color/winTextColor"
         android:layout_gravity="center"
         android:padding="10dp"
-        android:textSize="20dp"
+        android:textSize="25dp"
         android:id="@+id/textView" />
 
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageBackMenu"
-            android:layout_gravity="left|top"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/image_menu"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageRepeatGame"
-            android:layout_gravity="right|top"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/image_repeat"/>
-    </FrameLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageBackMenu"
+                android:layout_gravity="left"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="45dp"
+                android:src="@drawable/image_menu"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageRepeatGame"
+                android:layout_gravity="right"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="45dp"
+                android:src="@drawable/image_repeat"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
