@@ -31,7 +31,7 @@ public class MainActivity extends Activity
         try
         {
             CellsCount cellsCount = CellsCount.getCells(view.getId());
-            startPlayScreen(cellsCount.getRows(), cellsCount.getColumn());
+            startPlayScreen(cellsCount.getRows(), cellsCount.getColumn(), cellsCount.getScore());
         }
         catch (ButtonClickException e)
         {
@@ -39,9 +39,9 @@ public class MainActivity extends Activity
         }
     }
 
-    public void startPlayScreen(int rows, int column)
+    public void startPlayScreen(int rows, int column, int score)
     {
-        ActivityRunner.playScreenActivity(this).rows(rows).column(column).start();
+        ActivityRunner.playScreenActivity(this).rows(rows).column(column).score(score).start();
     }
 
     @AfterViews

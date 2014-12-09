@@ -30,11 +30,13 @@ public class VictoryDialog extends DialogFragment
 {
     private VictoryDialogListener victoryDialogListener;
     private String gameTime;
+    private long score;
 
-    public VictoryDialog(String gameTime,VictoryDialogListener victoryDialogListener)
+    public VictoryDialog(String gameTime,VictoryDialogListener victoryDialogListener, long score)
     {
         this.victoryDialogListener = victoryDialogListener;
         this.gameTime = gameTime;
+        this.score = score;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +45,8 @@ public class VictoryDialog extends DialogFragment
         View v = inflater.inflate(R.layout.victory_dialog_fragment, null);
         v.findViewById(R.id.imageRepeatGame).setOnClickListener(repeatClick);
         v.findViewById(R.id.imageBackMenu).setOnClickListener(menuClick);
-        ((TextView) v.findViewById(R.id.gameTime)).setText("Время : " + gameTime);
+        ((TextView) v.findViewById(R.id.gameTime)).setText("Time : " + gameTime);
+        ((TextView) v.findViewById(R.id.scoreText)).setText("Score : " + score);
         return v;
     }
 

@@ -10,8 +10,6 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import by.intexsoft.memoryspace.ui.activity.PlayScreenActivity;
-
 
 /**
  * Created by Евгений on 27.11.2014.
@@ -31,11 +29,14 @@ public class GameTimer extends TextView
 
     private GameTimerTask gameTimerTask;
 
+    private int maxScore;
+    private long score;
 
-    public GameTimer(Context context,TextView textView)
+
+    public GameTimer(Context context,TextView textView, int maxScore)
     {
         super(context);
-
+        this.maxScore = maxScore;
         this.context = context;
         this.textView = textView;
     }
@@ -43,6 +44,7 @@ public class GameTimer extends TextView
     public void startTimer()
     {
         textView.setText("0:00");
+        score = maxScore;
         gameTimerTask = new GameTimerTask();
         timer = new Timer();
         timer.schedule(gameTimerTask, 1000, 1000);
@@ -54,6 +56,15 @@ public class GameTimer extends TextView
         timer = null;
         time = 0;
         setText(simpleDateFormat.format(calendar.getTime()));
+    }
+
+    public long getScore()
+    {
+        if(score<0)
+        {
+            score = 0;
+        }
+        return score;
     }
 
 
@@ -69,6 +80,7 @@ public class GameTimer extends TextView
                 @Override
                 public void run() {
                     time += 1000;
+                    score -= 5;
                     calendar.setTimeInMillis(time);
                     textView.setText(simpleDateFormat.format(calendar.getTime()));
                 }

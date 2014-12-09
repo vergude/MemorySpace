@@ -22,6 +22,7 @@ import by.intexsoft.memoryspace.presenter.interactor.BuildPlayFieldImpl;
 import by.intexsoft.memoryspace.ui.VictoryDialog;
 import by.intexsoft.memoryspace.util.GameTimer;
 import by.intexsoft.memoryspace.util.ImagesUtils;
+import by.intexsoft.memoryspace.util.RatingSaver;
 import by.intexsoft.memoryspace.view.PlayScreenActivityView;
 import by.intexsoft.memoryspace.view.TimerView;
 import by.intexsoft.memoryspace.view.VictoryDialogListener;
@@ -48,11 +49,14 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     DialogFragment dialogFragment;
 
     private GameTimer gameTimer;
+    private RatingSaver ratingSaver;
+    private long gameScore;
 
     private SoundPool soundPool;
     private int soundVictoryId;
     private int soundFailureId;
     private int streamId;
+
 
     @Extra
     int rows;
@@ -60,11 +64,17 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     @Extra
     int column;
 
+    @Extra
+    int score;
+
     @ViewById
     LinearLayout topLayout;
 
     @ViewById(R.id.roundTime)
     TextView roundTime;
+
+    @ViewById(R.id.playerScore)
+    TextView playerScore;
 
     @ViewById
     LinearLayout botLayout;
@@ -81,12 +91,16 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     @AfterViews
     public void startGame()
     {
-
+        roundTime.setText("0:00");
+        playerScore.setText(Long.toString(gameScore));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ratingSaver = new RatingSaver();
+        gameScore = ratingSaver.loadText(this);
         soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
         soundPool.setOnLoadCompleteListener(this);
         soundVictoryId = soundPool.load(this,R.raw.victory,1);
@@ -127,7 +141,7 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
         {
             gameTimer.stopTimer();
             streamId = soundPool.play(soundVictoryId,1, 1, 0, 0, 1);
-            dialogFragment = new VictoryDialog(gameTimer.getText().toString(),this);
+            dialogFragment = new VictoryDialog(gameTimer.getText().toString(),this, gameTimer.getScore());
             dialogFragment.show(getFragmentManager(),"dialogVictory");
             dialogFragment.setCancelable(false);
         }
@@ -189,20 +203,25 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
     {
         soundPool.stop(streamId);
         getLoaderManager().restartLoader(0, null, this);
-        //gameTimer.startTimer();
         dialogFragment.dismiss();
+        ratingSaver.saveText(this,gameScore + gameTimer.getScore());
+
+        gameScore = ratingSaver.loadText(this);
+        playerScore.setText(Long.toString(gameScore));
     }
 
     @Override
     public void onBackMenu() {
         soundPool.stop(streamId);
         soundPool.release();
+        ratingSaver.saveText(this,gameScore + gameTimer.getScore());
+
         this.finish();
     }
 
     @Override
     public void showTimer() {
-        gameTimer = new GameTimer(this,roundTime);
+        gameTimer = new GameTimer(this,roundTime,score);
         gameTimer.startTimer();
     }
 }
