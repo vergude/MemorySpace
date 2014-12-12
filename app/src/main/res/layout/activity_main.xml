@@ -10,8 +10,9 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_weight="1">
 
         <Button
             android:layout_width="wrap_content"
@@ -58,8 +59,10 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:layout_weight="1">
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -110,6 +113,22 @@
             android:paddingLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:onClick="buttonClicked"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/menuButton"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/image_download"
+            />
     </LinearLayout>
 
 </LinearLayout>

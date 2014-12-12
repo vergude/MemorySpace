@@ -165,6 +165,12 @@ public class PlayScreenActivity extends Activity implements PlayScreenActivityVi
         getLoaderManager().restartLoader(0, null, this);
     }
 
+    @Click
+    public void backButton()
+    {
+        this.finish();
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {

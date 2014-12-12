@@ -20,12 +20,13 @@
             android:layout_height="100dp"
             android:layout_gravity="left"
             android:id="@+id/imageView"
-            android:background="@drawable/victory" />
+            android:background="@drawable/cup" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"

@@ -153,7 +153,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 	{
 		final SquareImageView imageView = new SquareImageView(context);
 		imageView.setId(index + 100);
-        imageView.setPadding(10,10,10,10);
+        imageView.setPadding(5,5,5,5);
         imageView.setBackground(context.getResources().getDrawable(R.drawable.image));
 		imageView.setImageDrawable(ImagesUtils.loadDrawableFromAsset(context, imageUrlList, position));
         imageView.setTag(new ImageViewCell(position,imageUrlList.get(position)));
@@ -204,7 +204,7 @@ public class BuildPlayFieldImpl implements BuildPlayField, OnFinishPlayListener
 	{
 		final SquareImageView imageView = new SquareImageView(context);
 		imageView.setId(index + 1000);
-        imageView.setPadding(10,10,10,10);
+        imageView.setPadding(5,5,5,5);
         imageView.setBackground(context.getResources().getDrawable(R.drawable.image));
 		imageView.setImageDrawable(ImagesUtils.loadBackDrawableFromAsset(context, BACK_IMAGE_PREFIX));
         imageView.setTag(new ImageViewCell(position, null));
